@@ -11,15 +11,20 @@ void parseFile(std::istream & input, std::ostream & output){
     input >> line;
 
     unsigned long usages = 0;
-
+    //One letter +1 variant, 2 letters +2 variants:
+    //abca   +1 : abca
+    //abcab  +2 : abcab, bcab
+    //abcabc +3 : abcabc, bcabc, cabc
+    unsigned int consecutiveEqualLetters = 0;
     for(auto left = line.begin(), right = line.begin()+k;
         right != line.end();
         ++left, ++right){
-        unsigned int i = 0;
-        while (*(left+i) == *(right+i)){
-            ++i;
+        if(*left == *right){
+            ++consecutiveEqualLetters;
+            usages+=consecutiveEqualLetters;
+        } else {
+            consecutiveEqualLetters = 0;
         }
-        usages+=i;
     }
 
     output << usages;
